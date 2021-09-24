@@ -377,10 +377,11 @@ async def start_(client: anibot, message: Message, mdata: dict):
                 return
         await client.send_message(
             gid,
-            text=f"""Kon'nichiwa!!!
+            text=f"""hii!!!
 I'm {bot.first_name} bot and I can help you get info on Animes, Mangas, Characters, Airings, Schedules, Watch Orders of Animes, etc
 For more info send /help in here.
-If you wish to use me in a group start me by /start{BOT_NAME} command after adding me in the group."""
+If you wish to use me in a group start me by /start{BOT_NAME} command after adding me in the group.
+powered by @tr0j3n and @Peaceful_Wolf_016"""
         )
     else:
         if not await (GROUPS.find_one({"id": gid})):
