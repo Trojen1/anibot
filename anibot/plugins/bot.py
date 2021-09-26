@@ -377,11 +377,20 @@ async def start_(client: anibot, message: Message, mdata: dict):
                 return
         await client.send_message(
             gid,
-            text=f"""hii!!!
-I'm {bot.first_name} bot and I can help you get info on Animes, Mangas, Characters, Airings, Schedules, Watch Orders of Animes, etc
-For more info send /help in here.
-If you wish to use me in a group start me by /start{BOT_NAME} command after adding me in the group.
-powered by @tr0j3n and @Peaceful_Wolf_016"""
+            text=f"""Konichiwa 😘
+❣ I'm {bot.first_name} bot ❣
+
+🤍I can help you get info on🤍
+❤Animes,
+🧡Mangas,
+💛Characters,
+💚Airings,
+💙Schedules,
+💜Watch Orders of Animes, etc
+
+🔰For more info send /help in here.
+🌐If you wish to use me in a group start me by /start{BOT_NAME} command after adding me in the group and promote me as an Admin.
+[❌](https://telegra.ph/file/820a360366fe497b0afc3.jpg) Made by @tr0j3n and @Peaceful_Wolf_016"""
         )
     else:
         if not await (GROUPS.find_one({"id": gid})):
@@ -415,7 +424,8 @@ async def help_(client: anibot, message: Message, mdata: dict):
     text='''This is a small guide on how to use me\n\n**Basic Commands:**\nUse /ping or !ping cmd to check if bot is online
 Use /start or !start cmd to start bot in group or pm
 Use /help or !help cmd to get interactive help on available bot cmds
-Use /feedback cmd to contact bot owner'''
+Use /feedback cmd to contact bot owner
+*Note* After Adding Me To a Group please promote Me As an admin'''
     if id_ in OWNER:
         await client.send_message(gid, text=text, reply_markup=buttons)
         await client.send_message(
