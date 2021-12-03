@@ -85,86 +85,8 @@ async def anime_cmd(client: anibot, message: Message, mdata: dict):
     await update_pics_cache(title_img)
 
 
-@anibot.on_message(filters.command(["manga", f"manga{BOT_NAME}"], prefixes=trg))
-@control_user
-async def manga_cmd(client: anibot, message: Message, mdata: dict):
-    """Search Manga Info"""
-    text = mdata['text'].split(" ", 1)
-    gid = mdata['chat']['id']
-    gidtype = mdata['chat']['type']
-    user = mdata['from_user']['id']
-    if gidtype in ["supergroup", "group"] and not await (GROUPS.find_one({"id": gid})):
-        try:
-            gidtitle = mdata['chat']['username']
-        except KeyError:
-            gidtitle = mdata['chat']['title']
-        await GROUPS.insert_one({"id": gid, "grp": gidtitle})
-        await clog("ANIBOT", f"Bot added to a new group\n\n{gidtitle}\nID: `{gid}`", "NEW_GROUP")
-    find_gc = await DC.find_one({'_id': gid})
-    if find_gc is not None and 'manga' in find_gc['cmd_list'].split():
-        return
-    if len(text)==1:
-        k = await message.reply_text("Please give a query to search about\nexample: /manga The teasing master Takagi san")
-        await asyncio.sleep(5)
-        return await k.delete()
-    query = text[1]
-    qdb = rand_key()
-    MANGA_DB[qdb] = query
-    auth = False
-    if (await AUTH_USERS.find_one({"id": user})):
-        auth = True
-    result = await get_manga(qdb, 1, auth=auth, user=user)
-    if len(result) == 1:
-        k = await message.reply_text(result[0])
-        await asyncio.sleep(5)
-        return await k.delete()
-    pic, finals_ = result[0], result[1][0]
-    buttons = get_btns("MANGA", lsqry=qdb, lspage=1, user=user, result=result, auth=auth)
-    if await (SFW_GRPS.find_one({"id": gid})) and result[2].pop()=="True":
-        buttons = get_btns("MANGA", lsqry=qdb, lspage=1, user=user, result=result, auth=auth, sfw="True")
-        await client.send_photo(gid, no_pic[random.randint(0, 4)], caption="This manga is marked 18+ and not allowed in this group", reply_markup=buttons)
-        return
-    await client.send_photo(gid, pic, caption=finals_, reply_markup=buttons)
-    await update_pics_cache(pic)
 
 
-@anibot.on_message(filters.command(["character", f"character{BOT_NAME}"], prefixes=trg))
-@control_user
-async def character_cmd(client: anibot, message: Message, mdata: dict):
-    """Get Info about a Character"""
-    text = mdata['text'].split(" ", 1)
-    gid = mdata['chat']['id']
-    gidtype = mdata['chat']['type']
-    user = mdata['from_user']['id']
-    if gidtype in ["supergroup", "group"] and not await (GROUPS.find_one({"id": gid})):
-        try:
-            gidtitle = mdata['chat']['username']
-        except KeyError:
-            gidtitle = mdata['chat']['title']
-        await GROUPS.insert_one({"id": gid, "grp": gidtitle})
-        await clog("ANIBOT", f"Bot added to a new group\n\n{gidtitle}\nID: `{gid}`", "NEW_GROUP")
-    find_gc = await DC.find_one({'_id': gid})
-    if find_gc is not None and 'character' in find_gc['cmd_list'].split():
-        return
-    if len(text)==1:
-        k = await message.reply_text("Please give a query to search about\nexample: /character Nezuko")
-        await asyncio.sleep(5)
-        return await k.delete()
-    query = text[1]
-    qdb = rand_key()
-    CHAR_DB[qdb]=query
-    auth = False
-    if (await AUTH_USERS.find_one({"id": user})):
-        auth = True
-    result = await get_character(qdb, 1, auth=auth, user=user)
-    if len(result) == 1:
-        k = await message.reply_text(result[0])
-        await asyncio.sleep(5)
-        return await k.delete()
-    img = result[0]
-    cap_text = result[1][0]
-    buttons = get_btns("CHARACTER", user=user, lsqry=qdb, lspage=1, result=result, auth=auth)
-    await client.send_photo(gid, img, caption=cap_text, reply_markup=buttons)
 
 
 @anibot.on_message(filters.command(["anilist", f"anilist{BOT_NAME}"], prefixes=trg))
