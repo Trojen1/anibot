@@ -60,8 +60,6 @@ Below is the list of basic anilist cmds for info on anime, character, manga, etc
 
 /character - Use this cmd to get info on character
 
-/manga - Use this cmd to get info on manga
-
 /airing - Use this cmd to get info on airing status of anime
 
 /top - Use this cmd to lookup top animes of a genre/tag or from all animes
