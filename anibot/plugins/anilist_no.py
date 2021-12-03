@@ -64,7 +64,7 @@ async def anime_cmd(client: anibot, message: Message, mdata: dict):
         await asyncio.sleep(5)
         return await k.delete()
     query = text[1]
-    auth = False
+    auth = False 
     vars_ = {"search": query}
     if query.isdigit():
         vars_ = {"id": int(query)}
